@@ -24,4 +24,4 @@ data/*.zip
 # IDEs
 .vscode/
 .idea/
-data/
+
