@@ -16,6 +16,11 @@ chroma_db/
 *.sqlite
 *.db
 
+# Large Data (Originals)
+data/*.zip
+# Allow chunks
+!data/*.zip.*
+
 # IDEs
 .vscode/
 .idea/
