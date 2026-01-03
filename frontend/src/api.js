@@ -56,5 +56,11 @@ export const api = {
     getAdherence: async (userId) => {
         const res = await axios.get(`${API_BASE}/adherence/${userId}`);
         return res.data;
+    },
+
+    // Doctor
+    getPatients: async () => {
+        const res = await axios.get(`${API_BASE}/users/patients`);
+        return res.data;
     }
 };

@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, BackgroundTasks
 from sqlalchemy.orm import Session
 from pydantic import BaseModel
 from typing import List, Optional
@@ -7,6 +7,7 @@ from datetime import date
 from backend.app.core.database import get_db
 from backend.app.models.sql_models import User, Reminder, Adherence
 from backend.app.core.security import get_password_hash, verify_password
+from backend.app.services.email_service import send_email, format_prescription_email
 
 router = APIRouter()
 
@@ -20,6 +21,12 @@ class UserRegister(BaseModel):
     password: str
     role: str # 'patient' or 'caregiver'
     fullname: Optional[str] = None
+
+class UserResponse(BaseModel):
+    id: int
+    username: str
+    role: str
+    # fullname: str # if we add fullname to DB
 
 class ReminderCreate(BaseModel):
     user_id: int
@@ -50,6 +57,7 @@ def register(user: UserRegister, db: Session = Depends(get_db)):
         username=user.username, 
         role=user.role,
         password_hash=hashed_password
+        # fullname not in DB yet
     )
     db.add(new_user)
     db.commit()
@@ -75,8 +83,15 @@ def login(user: UserLogin, db: Session = Depends(get_db)):
 
     return {"id": db_user.id, "username": db_user.username, "role": db_user.role}
 
+# --- Doctor / Caregiver Features ---
+
+@router.get("/users/patients")
+def get_all_patients(db: Session = Depends(get_db)):
+    # In prod, check if current user is 'caregiver'
+    return db.query(User).filter(User.role == "patient").all()
+
 @router.post("/reminders/add")
-def add_reminder(reminder: ReminderCreate, db: Session = Depends(get_db)):
+def add_reminder(reminder: ReminderCreate, background_tasks: BackgroundTasks, db: Session = Depends(get_db)):
     db_reminder = Reminder(
         user_id=reminder.user_id,
         drug_name=reminder.drug_name,
@@ -87,6 +102,22 @@ def add_reminder(reminder: ReminderCreate, db: Session = Depends(get_db)):
     db.add(db_reminder)
     db.commit()
     db.refresh(db_reminder)
+
+    # --- Send Notification Email ---
+    target_user = db.query(User).filter(User.id == reminder.user_id).first()
+    if target_user and target_user.username and "@" in target_user.username:
+        # Mock 'fullname' using username or hardcode if DB is missing it
+        patient_name = target_user.username.split('@')[0]
+        
+        email_body = format_prescription_email(
+            patient_name=patient_name,
+            drug_name=reminder.drug_name,
+            dosage=reminder.dosage,
+            frequency=reminder.frequency,
+            times=reminder.times
+        )
+        background_tasks.add_task(send_email, target_user.username, "New Prescription Added - MedCare", email_body)
+
     return db_reminder
 
 @router.get("/reminders/{user_id}")

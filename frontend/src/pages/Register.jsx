@@ -52,37 +52,7 @@ const Register = () => {
                 <p style={{ marginBottom: '30px', fontSize: '1.1rem' }}>Join MedCare for trusted medication tracking.</p>
 
                 <form onSubmit={handleRegister}>
-                    {/* Role Cards */}
-                    <div className="form-group" style={{ marginBottom: '2rem' }}>
-                        <label style={{ fontSize: '1rem', marginBottom: '1rem' }}>I am creating an account as...</label>
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
-                            <div
-                                onClick={() => setRole('patient')}
-                                style={{
-                                    border: `2px solid ${role === 'patient' ? '#0056b3' : '#e2e8f0'}`,
-                                    padding: '15px', borderRadius: '12px', cursor: 'pointer',
-                                    backgroundColor: role === 'patient' ? '#f0f9ff' : 'white',
-                                    display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px'
-                                }}
-                            >
-                                <User size={32} color={role === 'patient' ? '#0056b3' : '#64748b'} />
-                                <span style={{ fontWeight: '600', color: role === 'patient' ? '#0056b3' : '#2d3436' }}>Patient</span>
-                            </div>
-
-                            <div
-                                onClick={() => setRole('caregiver')}
-                                style={{
-                                    border: `2px solid ${role === 'caregiver' ? '#0056b3' : '#e2e8f0'}`,
-                                    padding: '15px', borderRadius: '12px', cursor: 'pointer',
-                                    backgroundColor: role === 'caregiver' ? '#f0f9ff' : 'white',
-                                    display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px'
-                                }}
-                            >
-                                <Users size={32} color={role === 'caregiver' ? '#0056b3' : '#64748b'} />
-                                <span style={{ fontWeight: '600', color: role === 'caregiver' ? '#0056b3' : '#2d3436' }}>Caregiver</span>
-                            </div>
-                        </div>
-                    </div>
+                    {/* Role Selection Removed - Patient Only */}
 
                     <div className="form-group">
                         <label>Full Name</label>
