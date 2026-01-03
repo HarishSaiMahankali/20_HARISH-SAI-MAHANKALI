@@ -38,7 +38,7 @@ def send_email(to_email: str, subject: str, body: str):
         print(f"Failed to send email: {e}")
         return False
 
-def format_prescription_email(patient_name, drug_name, dosage, frequency, times):
+def format_prescription_email(patient_name, drug_name, dosage, frequency, times, duration="Unlimited", reason="Not specified"):
     return f"""
 Hello {patient_name},
 
@@ -47,6 +47,8 @@ Your doctor has prescribed a new medication for you:
 Drug: {drug_name}
 Dosage: {dosage}
 Frequency: {frequency}
+Duration: {duration}
+Reason: {reason}
 Schedule: {', '.join(times)}
 
 Please log in to your MedCare portal to view your full schedule and track your adherence.

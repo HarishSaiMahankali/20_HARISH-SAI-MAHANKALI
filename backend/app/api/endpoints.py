@@ -34,6 +34,8 @@ class ReminderCreate(BaseModel):
     dosage: str
     frequency: str
     times: List[str]
+    duration: Optional[str] = "Unlimited"
+    reason: Optional[str] = "Not specified"
 
 class AdherenceCreate(BaseModel):
     reminder_id: int
@@ -97,7 +99,9 @@ def add_reminder(reminder: ReminderCreate, background_tasks: BackgroundTasks, db
         drug_name=reminder.drug_name,
         dosage=reminder.dosage,
         frequency=reminder.frequency,
-        times=reminder.times
+        times=reminder.times,
+        duration=reminder.duration,
+        reason=reminder.reason
     )
     db.add(db_reminder)
     db.commit()
@@ -114,7 +118,9 @@ def add_reminder(reminder: ReminderCreate, background_tasks: BackgroundTasks, db
             drug_name=reminder.drug_name,
             dosage=reminder.dosage,
             frequency=reminder.frequency,
-            times=reminder.times
+            times=reminder.times,
+            duration=reminder.duration,
+            reason=reminder.reason
         )
         background_tasks.add_task(send_email, target_user.username, "New Prescription Added - MedCare", email_body)
 

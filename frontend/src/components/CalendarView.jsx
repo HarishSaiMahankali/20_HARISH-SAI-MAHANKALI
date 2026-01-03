@@ -1,17 +1,36 @@
 import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight, Check, X, AlertTriangle } from 'lucide-react';
+import { api } from '../api';
+import { useAuth } from '../context/AuthContext';
 
-const CalendarView = () => {
+const CalendarView = ({ adherenceData: propData }) => {
     const [currentDate, setCurrentDate] = useState(new Date());
+    const [internalData, setInternalData] = useState({});
+    const { user } = useAuth();
 
-    // Mock Adherence Data
-    // Keys are 'YYYY-MM-DD', values are 'full' (green), 'missed' (red), 'partial' (yellow)
-    const adherenceData = {
-        '2026-01-01': 'full',
-        '2026-01-02': 'full',
-        '2026-01-03': 'partial', // Today (simulated)
-        '2025-12-31': 'full',
-    };
+    // Use props if available (Doctor view), otherwise use internal state (Patient view)
+    const adherenceData = propData || internalData;
+
+    React.useEffect(() => {
+        // Only fetch if no props provided AND we have a user (Patient View)
+        if (!propData && user) {
+            const fetchData = async () => {
+                try {
+                    const data = await api.getAdherence(user.id);
+                    // Convert array to map: { 'YYYY-MM-DD': 'status' }
+                    const map = data.reduce((acc, curr) => ({
+                        ...acc,
+                        [curr.date]: curr.status
+                    }), {});
+                    setInternalData(map);
+                } catch (e) {
+                    console.error("Failed to load calendar data", e);
+                }
+            };
+            fetchData();
+        }
+    }, [user, propData]);
+
 
     const getDaysInMonth = (date) => {
         const year = date.getFullYear();

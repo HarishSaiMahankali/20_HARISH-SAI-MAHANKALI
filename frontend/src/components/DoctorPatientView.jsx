@@ -13,6 +13,8 @@ const DoctorPatientView = ({ patientId, patientName, onClose }) => {
     const [dosage, setDosage] = useState('');
     const [frequency, setFrequency] = useState('daily');
     const [time, setTime] = useState('09:00');
+    const [duration, setDuration] = useState('7 days');
+    const [reason, setReason] = useState('');
 
     useEffect(() => {
         if (!patientId) return;
@@ -33,11 +35,14 @@ const DoctorPatientView = ({ patientId, patientName, onClose }) => {
                 drug_name: drugName,
                 dosage: dosage,
                 frequency: frequency,
-                times: [time]
+                times: [time],
+                duration: duration,
+                reason: reason
             });
             alert("Prescription added & Email sent to patient!");
             setDrugName('');
             setDosage('');
+            setReason('');
             onClose(); // Close or refresh
         } catch (e) {
             alert("Failed to prescribe");
@@ -97,6 +102,21 @@ const DoctorPatientView = ({ patientId, patientName, onClose }) => {
                                 <div className="form-group">
                                     <label>Dosage</label>
                                     <input value={dosage} onChange={e => setDosage(e.target.value)} placeholder="e.g. 500mg" required />
+                                </div>
+                                <div className="form-group">
+                                    <label>Duration</label>
+                                    <input value={duration} onChange={e => setDuration(e.target.value)} placeholder="e.g. 7 days" required />
+                                </div>
+                                <div className="form-group">
+                                    <label>Reason for Medication</label>
+                                    <textarea
+                                        value={reason}
+                                        onChange={e => setReason(e.target.value)}
+                                        placeholder="e.g. For throat infection..."
+                                        style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #e2e8f0' }}
+                                        rows={3}
+                                        required
+                                    />
                                 </div>
                                 <div className="form-group">
                                     <label>Frequency</label>

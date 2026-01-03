@@ -283,8 +283,7 @@ input:focus {
 
 @media (min-width: 769px) {
   .content {
-    margin-left: 280px;
-    /* Sidebar width */
+    /* flex layout handles positioning */
   }
 }
 

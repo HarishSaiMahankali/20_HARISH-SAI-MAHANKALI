@@ -25,6 +25,8 @@ class Reminder(Base):
     instruction = Column(String)
     frequency = Column(String) # e.g. "daily"
     times = Column(JSON) # ["08:00", "20:00"]
+    duration = Column(String) # e.g. "7 days"
+    reason = Column(String) # e.g. "For infection"
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
 
     owner = relationship("User", back_populates="reminders")
