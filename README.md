@@ -95,19 +95,6 @@ Helps users and caregivers understand long-term adherence patterns.
 Optional export formats:
 - JSON
 - CSV
-
-### 👨‍👩‍👧 Caregiver (Parental) Access
-- Consent-based caregiver mode
-- Read-only access for caregivers
-
-Caregivers can view:
-- Medication schedules
-- Taken / missed doses
-- Adherence percentage
-
-🚫 Caregivers cannot modify medication or dosage
-🔓 Access can be revoked by the patient at any time
-
 ---
 
 ## 🛡️ Safety & Ethics
