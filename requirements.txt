@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+langchain
+langchain-community
+langchain-chroma
+chromadb
+pydantic
+requests
+# ollama is a standalone binary, but we need the library if using older langchain integrations, 
+# though langchain-community handles it. We'll stick to standard ones.
+python-multipart

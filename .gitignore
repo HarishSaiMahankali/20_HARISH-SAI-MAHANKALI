@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+venv/
+.env
+
+# Node/Frontend
+node_modules/
+frontend/dist/
+frontend/.env
+
+# Database / Vector Store
+chroma_db/
+*.sqlite
+*.db
+
+# IDEs
+.vscode/
+.idea/
+data/
